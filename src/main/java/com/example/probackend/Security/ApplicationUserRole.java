@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 import static com.example.probackend.Security.ApplicationUserPermission.*;
 
 public enum ApplicationUserRole {
-    USER(Sets.newHashSet()),
+    USER(Sets.newHashSet(USER_READ)),
     ADMIN(Sets.newHashSet(USER_READ,COURSE_READ,COURSE_WRITE,USER_WRITE)),
     ADMINTRAINEE(Sets.newHashSet(USER_READ,COURSE_READ));
 

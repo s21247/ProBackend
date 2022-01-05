@@ -1,0 +1,9 @@
+databaseChangeLog:
+  -changeSet:
+    id: user.sql
+    author: Wojciech Piorecki
+      sqlFile:
+        relativeToChangelogFile: true
+        stripComments: true
+        splitStatements: false
+        path: db.changelog/user.sql
