@@ -11,7 +11,4 @@ public class ProBackendApplication {
         SpringApplication.run(ProBackendApplication.class, args);
     }
 
-
-
-
 }

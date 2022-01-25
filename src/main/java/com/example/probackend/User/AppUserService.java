@@ -1,10 +1,15 @@
 package com.example.probackend.User;
 
+import com.example.probackend.registration.Token.ConfirmationToken;
+import com.example.probackend.registration.Token.ConfirmationTokenService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Service
 public class AppUserService implements UserDetailsService {
@@ -12,11 +17,14 @@ public class AppUserService implements UserDetailsService {
     private final static String USER_NOT_FOUND = "user with email %s not found";
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ConfirmationTokenService confirmationTokenService;
 
-    public AppUserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public AppUserService(UserRepository userRepository, PasswordEncoder passwordEncoder, ConfirmationTokenService confirmationTokenService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.confirmationTokenService = confirmationTokenService;
     }
+
 
 
     @Override
@@ -36,6 +44,28 @@ public class AppUserService implements UserDetailsService {
         appUser.setPassword(encodedPassword);
 
         userRepository.save(appUser);
-        return "it works";
+
+        String token = UUID.randomUUID().toString();
+        ConfirmationToken confirmationtoken = new ConfirmationToken(
+                token,
+                LocalDateTime.now(),
+                LocalDateTime.now().plusMinutes(15),
+                appUser
+
+        );
+        confirmationTokenService.saveConfirmationToken(
+                confirmationtoken
+        );
+        return token;
     }
+    public int enableAppUser(String email){
+        return userRepository.enableAppUser(email);
+    }
+
+    public UserDetails findUserByUsername(String username){
+        return  userRepository.findUserByUsername(username);
+    }
+
+
+
 }

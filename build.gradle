@@ -21,6 +21,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation group: 'com.google.guava', name: 'guava', version: '31.0.1-jre'
     implementation 'org.postgresql:postgresql'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.6.2'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }

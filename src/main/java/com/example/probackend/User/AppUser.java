@@ -1,6 +1,7 @@
 package com.example.probackend.User;
 
 import com.example.probackend.Security.ApplicationUserRole;
+import com.example.probackend.group.GroupEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Set;
 
 @Entity
 @Table(name = "user",schema = "public")
@@ -34,8 +36,11 @@ public class AppUser implements UserDetails {
     @Enumerated(EnumType.STRING)
     @Column(name = "app_user_role")
     private ApplicationUserRole role;
-    private boolean logged;
-    private boolean enabled;
+    @OneToMany
+    @JoinColumn(name = "user_id")
+    private Set<GroupEntity> groups;
+    private boolean logged = false;
+    private boolean enabled = false;
 
     public AppUser(String username,
                    String email, String password,
@@ -49,6 +54,9 @@ public class AppUser implements UserDetails {
     }
 
 
+    public AppUser(String username){
+        this.username = username;
+    }
 
     public AppUser() {
     }
